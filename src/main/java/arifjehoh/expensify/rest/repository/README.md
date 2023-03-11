@@ -1,0 +1,1 @@
+All repository should start with a `CrudRepository<T, Long>`.

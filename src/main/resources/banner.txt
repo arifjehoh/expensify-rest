@@ -1,0 +1,4 @@
+
+ PROJECT NAME: Expensify
+ Java Version: ${java.version}
+ Spring Boot Version: ${spring-boot.version}

@@ -22,7 +22,7 @@ Documentation can be available in yaml format as well, on the following path : /
 ```java
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping(value = "/api/")
 public class Controller {
 
 }

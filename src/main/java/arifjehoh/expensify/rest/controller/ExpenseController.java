@@ -6,6 +6,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
+
 @RestController
 @RequestMapping(name = "Expenses", value = "/api/v1/expenses")
 public class ExpenseController {
@@ -17,8 +19,12 @@ public class ExpenseController {
     }
 
     @GetMapping(value = "", name = "Find all", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ExpenseDTO> findAll() {
-        return ResponseEntity.internalServerError().build();
+    public ResponseEntity<Collection<ExpenseDTO>> findAll() {
+        Collection<ExpenseDTO> expenses = expenseService.findAll();
+        if (expenses.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(expenses);
     }
 
     @GetMapping(value = "/{id}", name = "Find by ID", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -1,8 +1,12 @@
 package arifjehoh.expensify.rest.service;
 
+import arifjehoh.expensify.rest.model.dto.ExpenseDTO;
 import arifjehoh.expensify.rest.repository.ExpenseRepository;
 import arifjehoh.expensify.rest.repository.impl.ExpenseRepositoryImpl;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Service
 public class ExpenseService {
@@ -10,5 +14,17 @@ public class ExpenseService {
 
     public ExpenseService(ExpenseRepositoryImpl expenseRepository) {
         this.expenseRepository = expenseRepository;
+    }
+
+    public Collection<ExpenseDTO> findAll() {
+        return expenseRepository.findAll()
+                                .stream()
+                                .map(dao -> ExpenseDTO.builder()
+                                                      .id(dao.getId())
+                                                      .description(dao.getDescription())
+                                                      .amount(dao.getAmount())
+                                                      .updatedAt(dao.getUpdatedAt())
+                                                      .build())
+                                .collect(Collectors.toList());
     }
 }

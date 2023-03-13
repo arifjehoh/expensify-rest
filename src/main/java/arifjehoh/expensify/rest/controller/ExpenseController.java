@@ -20,11 +20,9 @@ public class ExpenseController {
 
     @GetMapping(value = "", name = "Find all", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<ExpenseDTO>> findAll() {
-        Collection<ExpenseDTO> expenses = expenseService.findAll();
-        if (expenses.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(expenses);
+        return expenseService.findAll()
+                             .map(ResponseEntity::ok)
+                             .orElseGet(() -> ResponseEntity.noContent().build());
     }
 
     @GetMapping(value = "/{id}", name = "Find by ID", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

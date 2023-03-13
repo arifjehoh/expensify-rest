@@ -1,5 +1,6 @@
 package arifjehoh.expensify.rest.controller;
 
+import arifjehoh.expensify.rest.RestApplication;
 import arifjehoh.expensify.rest.model.dao.ExpenseDAO;
 import arifjehoh.expensify.rest.model.dto.ExpenseDTO;
 import arifjehoh.expensify.rest.repository.impl.ExpenseRepositoryImpl;
@@ -16,17 +17,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.sql.Date;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
+@SpringBootTest(classes = {RestApplication.class})
 class ExpenseControllerTest {
 
     private ExpenseController expenseController;
@@ -42,8 +41,6 @@ class ExpenseControllerTest {
 
     @Test
     void findAll_No_Content() {
-        List<ExpenseDAO> emptyList = Collections.emptyList();
-        when(expenseRepository.findAll()).thenReturn(emptyList);
         ResponseEntity<Collection<ExpenseDTO>> actual = expenseController.findAll();
         Assertions.assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     }
@@ -54,7 +51,7 @@ class ExpenseControllerTest {
                                                                       .id(9999L)
                                                                       .amount(100.0)
                                                                       .build()));
-        when(expenseRepository.findAll()).thenReturn(expenses);
+        when(expenseRepository.findAll()).thenReturn(Optional.of(expenses));
         ResponseEntity<Collection<ExpenseDTO>> actual = expenseController.findAll();
         Assertions.assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.OK);
         Assertions.assertThat(actual.getBody().size()).isEqualTo(1);

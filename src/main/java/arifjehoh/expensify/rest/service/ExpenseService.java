@@ -6,6 +6,7 @@ import arifjehoh.expensify.rest.repository.impl.ExpenseRepositoryImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -16,15 +17,15 @@ public class ExpenseService {
         this.expenseRepository = expenseRepository;
     }
 
-    public Collection<ExpenseDTO> findAll() {
+    public Optional<Collection<ExpenseDTO>> findAll() {
         return expenseRepository.findAll()
-                                .stream()
-                                .map(dao -> ExpenseDTO.builder()
-                                                      .id(dao.getId())
-                                                      .description(dao.getDescription())
-                                                      .amount(dao.getAmount())
-                                                      .updatedAt(dao.getUpdatedAt())
-                                                      .build())
-                                .collect(Collectors.toList());
+                                .map(collection -> collection.stream()
+                                                             .map(dao -> ExpenseDTO.builder()
+                                                                                   .id(dao.getId())
+                                                                                   .description(dao.getDescription())
+                                                                                   .amount(dao.getAmount())
+                                                                                   .updatedAt(dao.getUpdatedAt())
+                                                                                   .build())
+                                                             .collect(Collectors.toList()));
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 @Repository
 public class ExpenseRepositoryImpl implements ExpenseRepository {
@@ -16,7 +17,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     }
 
     @Override
-    public Collection<ExpenseDAO> findAll() {
-        return expenses;
+    public Optional<Collection<ExpenseDAO>> findAll() {
+        return Optional.ofNullable(expenses);
     }
 }

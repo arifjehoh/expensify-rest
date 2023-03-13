@@ -4,8 +4,9 @@ import arifjehoh.expensify.rest.model.dao.ExpenseDAO;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Repository
 public interface ExpenseRepository {
-    Collection<ExpenseDAO> findAll();
+    Optional<Collection<ExpenseDAO>> findAll();
 }

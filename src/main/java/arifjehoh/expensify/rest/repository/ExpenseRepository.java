@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface ExpenseRepository {
     Optional<Collection<ExpenseDAO>> findAll();
+
+    Optional<ExpenseDAO> findById(long id);
 }

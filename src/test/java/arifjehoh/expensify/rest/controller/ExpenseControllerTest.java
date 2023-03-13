@@ -61,8 +61,26 @@ class ExpenseControllerTest {
     }
 
     @Test
-    void findById() {
-        fail();
+    void findById_NoContent() {
+        ResponseEntity<ExpenseDTO> actual = expenseController.findById(9999L);
+        Assertions.assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+    }
+
+    @Test
+    void findById_Ok() {
+        ExpenseDAO expected = ExpenseDAO.builder()
+                                        .id(9999L)
+                                        .amount(999.9)
+                                        .updatedAt(Date.valueOf("2023-03-14"))
+                                        .createdAt(Date.valueOf("2023-03-13"))
+                                        .description("Savings")
+                                        .build();
+        when(expenseRepository.findById(9999L)).thenReturn(Optional.ofNullable(expected));
+        ResponseEntity<ExpenseDTO> actual = expenseController.findById(9999L);
+        Assertions.assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.OK);
+        Assertions.assertThat(actual.getBody())
+                  .extracting(ExpenseDTO::getId, ExpenseDTO::getDescription, ExpenseDTO::getAmount, ExpenseDTO::getUpdatedAt)
+                  .containsOnly(9999L, "Savings", 999.9, Date.valueOf("2023-03-14"));
     }
 
     @Test

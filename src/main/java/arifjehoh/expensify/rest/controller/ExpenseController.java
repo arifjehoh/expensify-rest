@@ -27,7 +27,9 @@ public class ExpenseController {
 
     @GetMapping(value = "/{id}", name = "Find by ID", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ExpenseDTO> findById(@PathVariable(value = "id") Long id) {
-        return ResponseEntity.internalServerError().build();
+        return expenseService.findById(id)
+                             .map(ResponseEntity::ok)
+                             .orElseGet(() -> ResponseEntity.noContent().build());
     }
 
     @PostMapping(value = "", name = "Create a new expense", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

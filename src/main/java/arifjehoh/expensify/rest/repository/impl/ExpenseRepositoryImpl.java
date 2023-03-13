@@ -20,4 +20,11 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     public Optional<Collection<ExpenseDAO>> findAll() {
         return Optional.ofNullable(expenses);
     }
+
+    @Override
+    public Optional<ExpenseDAO> findById(long id) {
+        return expenses.stream().
+                       filter(expense -> expense.getId().equals(id))
+                       .findFirst();
+    }
 }

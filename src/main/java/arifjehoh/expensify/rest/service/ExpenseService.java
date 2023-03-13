@@ -28,4 +28,14 @@ public class ExpenseService {
                                                                                    .build())
                                                              .collect(Collectors.toList()));
     }
+
+    public Optional<ExpenseDTO> findById(Long id) {
+        return expenseRepository.findById(id)
+                                .map(dao -> ExpenseDTO.builder()
+                                                      .id(dao.getId())
+                                                      .description(dao.getDescription())
+                                                      .amount(dao.getAmount())
+                                                      .updatedAt(dao.getUpdatedAt())
+                                                      .build());
+    }
 }
